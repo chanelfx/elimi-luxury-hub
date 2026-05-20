@@ -6,7 +6,52 @@ export const LANGUAGES: { code: Language; label: string; native: string; flag: s
   { code: "rw", label: "Kinyarwanda", native: "Kinyarwanda", flag: "🇷🇼" },
 ];
 
-export const translations = {
+export interface TranslationKey {
+  brand: string;
+  tagline: string;
+  chooseLanguage: string;
+  chooseLanguageSub: string;
+  continue: string;
+  nav: { home: string; products: string; categories: string; about: string; contact: string; login: string };
+  home: {
+    heroEyebrow: string; heroTitle: string; heroSubtitle: string;
+    browseProducts: string; contactUs: string;
+    categoriesTitle: string; categoriesSub: string;
+    featuredTitle: string; featuredSub: string;
+    trendingTitle: string; newTitle: string; viewAll: string;
+  };
+  products: {
+    title: string; subtitle: string; search: string; filterBy: string; sortBy: string;
+    newest: string; priceLow: string; priceHigh: string; mostLiked: string;
+    allCategories: string; noResults: string; noResultsSub: string; from: string;
+  };
+  product: {
+    contactWhatsApp: string; contactCall: string; details: string; description: string;
+    location: string; condition: string; brand: string; uploaded: string;
+    sold: string; reserved: string; pending: string; available: string;
+    back: string; relatedTitle: string; shareMessage: string;
+  };
+  categories: {
+    realEstate: string; land: string; vehicles: string; cars: string; motorcycles: string;
+    trucks: string; computers: string; laptops: string; smartphones: string; tablets: string;
+    electronics: string; tvs: string; cameras: string; furniture: string; fashion: string;
+    accessories: string; rentals: string; services: string; homeEquipment: string;
+    officeEquipment: string; others: string;
+  };
+  about: {
+    title: string; subtitle: string; missionTitle: string; mission: string;
+    visionTitle: string; vision: string; valuesTitle: string;
+    values: { title: string; desc: string }[];
+  };
+  contact: {
+    title: string; subtitle: string; phone: string; whatsapp: string; email: string;
+    followUs: string; sendMessage: string; name: string; message: string; send: string;
+  };
+  footer: { tagline: string; quickLinks: string; categories: string; contact: string; rights: string };
+  common: { loading: string; error: string; retry: string; changeLanguage: string };
+}
+
+export const translations: Record<Language, TranslationKey> = {
   en: {
     brand: "Elimi Trust Ltd",
     tagline: "Rwanda's Premium Classified Marketplace",
@@ -388,6 +433,4 @@ export const translations = {
       changeLanguage: "Hindura ururimi",
     },
   },
-} as const;
-
-export type TranslationKey = typeof translations.en;
+};
