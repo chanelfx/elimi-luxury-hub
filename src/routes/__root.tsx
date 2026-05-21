@@ -6,6 +6,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { LanguageProvider } from "@/i18n/LanguageContext";
+import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
@@ -85,10 +86,12 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <Outlet />
-        <Toaster theme="dark" position="top-right" />
-      </LanguageProvider>
+      <AuthProvider>
+        <LanguageProvider>
+          <Outlet />
+          <Toaster theme="dark" position="top-right" />
+        </LanguageProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
