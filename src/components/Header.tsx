@@ -1,12 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, Globe, LogIn } from "lucide-react";
+import { Menu, X, Globe, LogIn, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { LANGUAGES } from "@/i18n/translations";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
   const { t, language, setLanguage } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -101,13 +103,23 @@ export function Header() {
             </AnimatePresence>
           </div>
 
-          <Link
-            to="/login"
-            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium border border-white/10 hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all"
-          >
-            <LogIn className="h-3.5 w-3.5" />
-            <span>{t.nav.login}</span>
-          </Link>
+          {isAuthenticated ? (
+            <Link
+              to="/dashboard"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 text-[var(--color-gold)] hover:bg-[var(--color-gold)]/20 transition-all"
+            >
+              <LayoutDashboard className="h-3.5 w-3.5" />
+              <span>Dashboard</span>
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium border border-white/10 hover:border-[var(--color-gold)]/40 hover:bg-white/5 transition-all"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span>{t.nav.login}</span>
+            </Link>
+          )}
 
           <button
             onClick={() => setMobileOpen(true)}
