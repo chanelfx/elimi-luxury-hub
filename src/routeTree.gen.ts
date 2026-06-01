@@ -23,6 +23,8 @@ import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardProductsRouteImport } from './routes/_authenticated/dashboard.products'
 import { Route as AuthenticatedDashboardAnalyticsRouteImport } from './routes/_authenticated/dashboard.analytics'
+import { Route as AuthenticatedDashboardProductsNewRouteImport } from './routes/_authenticated/dashboard.products.new'
+import { Route as AuthenticatedDashboardProductsEditIdRouteImport } from './routes/_authenticated/dashboard.products.edit.$id'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
@@ -98,6 +100,18 @@ const AuthenticatedDashboardAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardProductsNewRoute =
+  AuthenticatedDashboardProductsNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedDashboardProductsRoute,
+  } as any)
+const AuthenticatedDashboardProductsEditIdRoute =
+  AuthenticatedDashboardProductsEditIdRouteImport.update({
+    id: '/edit/$id',
+    path: '/edit/$id',
+    getParentRoute: () => AuthenticatedDashboardProductsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,10 +123,12 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/products/$slug': typeof ProductsSlugRoute
   '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,10 +140,12 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/products/$slug': typeof ProductsSlugRoute
   '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,10 +159,12 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/products/$slug': typeof ProductsSlugRoute
   '/_authenticated/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/_authenticated/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/_authenticated/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/_authenticated/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -162,6 +182,8 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/dashboard/staff'
+    | '/dashboard/products/new'
+    | '/dashboard/products/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +199,8 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/dashboard/staff'
+    | '/dashboard/products/new'
+    | '/dashboard/products/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -193,6 +217,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/settings'
     | '/_authenticated/dashboard/staff'
+    | '/_authenticated/dashboard/products/new'
+    | '/_authenticated/dashboard/products/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -305,12 +331,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAnalyticsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/products/new': {
+      id: '/_authenticated/dashboard/products/new'
+      path: '/new'
+      fullPath: '/dashboard/products/new'
+      preLoaderRoute: typeof AuthenticatedDashboardProductsNewRouteImport
+      parentRoute: typeof AuthenticatedDashboardProductsRoute
+    }
+    '/_authenticated/dashboard/products/edit/$id': {
+      id: '/_authenticated/dashboard/products/edit/$id'
+      path: '/edit/$id'
+      fullPath: '/dashboard/products/edit/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardProductsEditIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardProductsRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardProductsRouteChildren {
+  AuthenticatedDashboardProductsNewRoute: typeof AuthenticatedDashboardProductsNewRoute
+  AuthenticatedDashboardProductsEditIdRoute: typeof AuthenticatedDashboardProductsEditIdRoute
+}
+
+const AuthenticatedDashboardProductsRouteChildren: AuthenticatedDashboardProductsRouteChildren =
+  {
+    AuthenticatedDashboardProductsNewRoute:
+      AuthenticatedDashboardProductsNewRoute,
+    AuthenticatedDashboardProductsEditIdRoute:
+      AuthenticatedDashboardProductsEditIdRoute,
+  }
+
+const AuthenticatedDashboardProductsRouteWithChildren =
+  AuthenticatedDashboardProductsRoute._addFileChildren(
+    AuthenticatedDashboardProductsRouteChildren,
+  )
+
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardAnalyticsRoute: typeof AuthenticatedDashboardAnalyticsRoute
-  AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRoute
+  AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRouteWithChildren
   AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
   AuthenticatedDashboardStaffRoute: typeof AuthenticatedDashboardStaffRoute
@@ -319,7 +377,8 @@ interface AuthenticatedDashboardRouteChildren {
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardAnalyticsRoute: AuthenticatedDashboardAnalyticsRoute,
-    AuthenticatedDashboardProductsRoute: AuthenticatedDashboardProductsRoute,
+    AuthenticatedDashboardProductsRoute:
+      AuthenticatedDashboardProductsRouteWithChildren,
     AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
     AuthenticatedDashboardStaffRoute: AuthenticatedDashboardStaffRoute,
@@ -366,3 +425,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
