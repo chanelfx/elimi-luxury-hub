@@ -45,6 +45,21 @@ function AuthenticatedLayout() {
   }
 
   const handleSignOut = async () => {
+    // Logout gate: employees must submit today's report first (admins exempt)
+    if (!isAdmin) {
+      const today = new Date().toISOString().slice(0, 10);
+      const { data: report } = await supabase
+        .from("daily_reports")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("report_date", today)
+        .maybeSingle();
+      if (!report) {
+        alert("Please submit today's report before signing out.");
+        navigate({ to: "/dashboard/reports" });
+        return;
+      }
+    }
     await signOut();
     navigate({ to: "/login" });
   };

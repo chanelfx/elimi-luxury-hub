@@ -14,6 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_reports: {
+        Row: {
+          created_at: string
+          customers_contacted: number
+          id: string
+          notes: string | null
+          products_added: number
+          report_date: string
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customers_contacted?: number
+          id?: string
+          notes?: string | null
+          products_added?: number
+          report_date?: string
+          summary: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customers_contacted?: number
+          id?: string
+          notes?: string | null
+          products_added?: number
+          report_date?: string
+          summary?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      product_likes: {
+        Row: {
+          created_at: string
+          device_id: string
+          id: string
+          product_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          id?: string
+          product_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          id?: string
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_likes_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          attributes: Json
+          brand: string | null
+          category: string
+          condition: string | null
+          created_at: string
+          created_by: string
+          currency: string
+          description: string | null
+          id: string
+          images: Json
+          is_featured: boolean
+          likes_count: number
+          location: string | null
+          price: number | null
+          slug: string
+          status: Database["public"]["Enums"]["product_status"]
+          title: string
+          updated_at: string
+          views_count: number
+        }
+        Insert: {
+          attributes?: Json
+          brand?: string | null
+          category: string
+          condition?: string | null
+          created_at?: string
+          created_by: string
+          currency?: string
+          description?: string | null
+          id?: string
+          images?: Json
+          is_featured?: boolean
+          likes_count?: number
+          location?: string | null
+          price?: number | null
+          slug: string
+          status?: Database["public"]["Enums"]["product_status"]
+          title: string
+          updated_at?: string
+          views_count?: number
+        }
+        Update: {
+          attributes?: Json
+          brand?: string | null
+          category?: string
+          condition?: string | null
+          created_at?: string
+          created_by?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          images?: Json
+          is_featured?: boolean
+          likes_count?: number
+          location?: string | null
+          price?: number | null
+          slug?: string
+          status?: Database["public"]["Enums"]["product_status"]
+          title?: string
+          updated_at?: string
+          views_count?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -90,6 +221,7 @@ export type Database = {
     }
     Enums: {
       app_role: "super_admin" | "admin" | "employee"
+      product_status: "draft" | "available" | "reserved" | "sold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -218,6 +350,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["super_admin", "admin", "employee"],
+      product_status: ["draft", "available", "reserved", "sold"],
     },
   },
 } as const

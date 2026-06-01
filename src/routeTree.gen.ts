@@ -16,12 +16,15 @@ import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardStaffRouteImport } from './routes/_authenticated/dashboard.staff'
 import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
 import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardProductsRouteImport } from './routes/_authenticated/dashboard.products'
 import { Route as AuthenticatedDashboardAnalyticsRouteImport } from './routes/_authenticated/dashboard.analytics'
+import { Route as AuthenticatedDashboardProductsNewRouteImport } from './routes/_authenticated/dashboard.products.new'
+import { Route as AuthenticatedDashboardProductsEditIdRouteImport } from './routes/_authenticated/dashboard.products.edit.$id'
 
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
@@ -56,6 +59,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsSlugRoute = ProductsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ProductsRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -92,6 +100,18 @@ const AuthenticatedDashboardAnalyticsRoute =
     path: '/analytics',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardProductsNewRoute =
+  AuthenticatedDashboardProductsNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedDashboardProductsRoute,
+  } as any)
+const AuthenticatedDashboardProductsEditIdRoute =
+  AuthenticatedDashboardProductsEditIdRouteImport.update({
+    id: '/edit/$id',
+    path: '/edit/$id',
+    getParentRoute: () => AuthenticatedDashboardProductsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -99,13 +119,16 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/products': typeof ProductsRoute
+  '/products': typeof ProductsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/products/$slug': typeof ProductsSlugRoute
   '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,13 +136,16 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/products': typeof ProductsRoute
+  '/products': typeof ProductsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/products/$slug': typeof ProductsSlugRoute
   '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -129,13 +155,16 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/products': typeof ProductsRoute
+  '/products': typeof ProductsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/products/$slug': typeof ProductsSlugRoute
   '/_authenticated/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
-  '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRouteWithChildren
   '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/_authenticated/dashboard/staff': typeof AuthenticatedDashboardStaffRoute
+  '/_authenticated/dashboard/products/new': typeof AuthenticatedDashboardProductsNewRoute
+  '/_authenticated/dashboard/products/edit/$id': typeof AuthenticatedDashboardProductsEditIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -147,11 +176,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/products'
     | '/dashboard'
+    | '/products/$slug'
     | '/dashboard/analytics'
     | '/dashboard/products'
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/dashboard/staff'
+    | '/dashboard/products/new'
+    | '/dashboard/products/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -161,11 +193,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/products'
     | '/dashboard'
+    | '/products/$slug'
     | '/dashboard/analytics'
     | '/dashboard/products'
     | '/dashboard/reports'
     | '/dashboard/settings'
     | '/dashboard/staff'
+    | '/dashboard/products/new'
+    | '/dashboard/products/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -176,11 +211,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/products'
     | '/_authenticated/dashboard'
+    | '/products/$slug'
     | '/_authenticated/dashboard/analytics'
     | '/_authenticated/dashboard/products'
     | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/settings'
     | '/_authenticated/dashboard/staff'
+    | '/_authenticated/dashboard/products/new'
+    | '/_authenticated/dashboard/products/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -190,7 +228,7 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
-  ProductsRoute: typeof ProductsRoute
+  ProductsRoute: typeof ProductsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -244,6 +282,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/$slug': {
+      id: '/products/$slug'
+      path: '/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof ProductsSlugRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -286,12 +331,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAnalyticsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/products/new': {
+      id: '/_authenticated/dashboard/products/new'
+      path: '/new'
+      fullPath: '/dashboard/products/new'
+      preLoaderRoute: typeof AuthenticatedDashboardProductsNewRouteImport
+      parentRoute: typeof AuthenticatedDashboardProductsRoute
+    }
+    '/_authenticated/dashboard/products/edit/$id': {
+      id: '/_authenticated/dashboard/products/edit/$id'
+      path: '/edit/$id'
+      fullPath: '/dashboard/products/edit/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardProductsEditIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardProductsRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardProductsRouteChildren {
+  AuthenticatedDashboardProductsNewRoute: typeof AuthenticatedDashboardProductsNewRoute
+  AuthenticatedDashboardProductsEditIdRoute: typeof AuthenticatedDashboardProductsEditIdRoute
+}
+
+const AuthenticatedDashboardProductsRouteChildren: AuthenticatedDashboardProductsRouteChildren =
+  {
+    AuthenticatedDashboardProductsNewRoute:
+      AuthenticatedDashboardProductsNewRoute,
+    AuthenticatedDashboardProductsEditIdRoute:
+      AuthenticatedDashboardProductsEditIdRoute,
+  }
+
+const AuthenticatedDashboardProductsRouteWithChildren =
+  AuthenticatedDashboardProductsRoute._addFileChildren(
+    AuthenticatedDashboardProductsRouteChildren,
+  )
+
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardAnalyticsRoute: typeof AuthenticatedDashboardAnalyticsRoute
-  AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRoute
+  AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRouteWithChildren
   AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
   AuthenticatedDashboardStaffRoute: typeof AuthenticatedDashboardStaffRoute
@@ -300,7 +377,8 @@ interface AuthenticatedDashboardRouteChildren {
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardAnalyticsRoute: AuthenticatedDashboardAnalyticsRoute,
-    AuthenticatedDashboardProductsRoute: AuthenticatedDashboardProductsRoute,
+    AuthenticatedDashboardProductsRoute:
+      AuthenticatedDashboardProductsRouteWithChildren,
     AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
     AuthenticatedDashboardStaffRoute: AuthenticatedDashboardStaffRoute,
@@ -323,6 +401,18 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface ProductsRouteChildren {
+  ProductsSlugRoute: typeof ProductsSlugRoute
+}
+
+const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsSlugRoute: ProductsSlugRoute,
+}
+
+const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
+  ProductsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -330,7 +420,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
-  ProductsRoute: ProductsRoute,
+  ProductsRoute: ProductsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
