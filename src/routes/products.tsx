@@ -67,7 +67,7 @@ function ProductsPage() {
   }, [products, q, search.q]);
 
   const updateSearch = (next: Partial<z.infer<typeof searchSchema>>) =>
-    navigate({ search: (prev) => ({ ...prev, ...next }) });
+    navigate({ search: (prev: z.infer<typeof searchSchema>) => ({ ...prev, ...next }) });
 
   return (
     <PublicShell>
